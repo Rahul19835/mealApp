@@ -19,12 +19,12 @@ if (localStorage.getItem("favouritesList") == null) {
 // Add and remove meal item from wishlist
 function favMealAddRemove(id){
 	let arr=JSON.parse(localStorage.getItem("favouritesList"));
-	let contain=false;
-    for (let index = 0; index < arr.length; index++) {
-        if (id==arr[index]) {
+	var contain=false;
+    arr.forEach((item) => {
+    	if (id==item) {
             contain=true;
         }
-    }
+    });
     if (contain) {
         let number = arr.indexOf(id);
         arr.splice(number, 1);
@@ -34,8 +34,22 @@ function favMealAddRemove(id){
         alert("your meal add your favourites list");
     }
     localStorage.setItem("favouritesList",JSON.stringify(arr));
-    showFavMeal();
+    setTimeout(() => {
+    	let wishListBtn = document.querySelectorAll(".actionBtn span");
+		wishListBtn.forEach(function (i) {
+			var mealFavId = i.getAttribute('data_id');
+			if(mealFavId == id){
+				if(!i.classList.contains('active')){
+					i.classList.add('active');
+				}else{
+					i.classList.remove('active');
+				}
+			}
+		});
+    	showFavMeal();
+    },500)
 }
+
 
 // Shpw fav meal item in wishlistbox
 function showFavMeal(){
@@ -102,3 +116,19 @@ async function printFavMeal(requestUrl){
 }
 
 
+// wishlist item
+function wishlistitem(){
+	let wishListBtn = document.querySelectorAll(".actionBtn span");
+	wishListBtn.forEach(function (i) {
+		i.addEventListener("click", function(e){
+			e.preventDefault();
+			var mealFavId = i.getAttribute('data_id');
+			favMealAddRemove(mealFavId);
+			if(!i.classList.contains('active')){
+				i.classList.add('active');
+			}else{
+				i.classList.remove('active');
+			}
+		});
+	});
+}

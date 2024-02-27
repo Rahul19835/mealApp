@@ -51,7 +51,7 @@ async function getList(url,type){
 								${isCat?''
 									:
 									`<div class="actionBtn">
-										<span class="wishlist ${isFav?'active':''}" title="Add to wishlist" ${attr}>
+										<span class="wishlistBtn ${isFav?'active':''}" title="Add to wishlist" ${attr} onclick="favMealAddRemove(${item.idMeal})">
 											<svg xmlns="http://www.w3.org/2000/svg" width="16.194" height="14.985" viewBox="0 0 16.194 14.985">
 											<path d="M11.829,39.221a4.128,4.128,0,0,0-3.415,1.9c-.118.166-.224.331-.317.492-.093-.161-.2-.326-.317-.492a4.128,4.128,0,0,0-3.415-1.9C1.82,39.221,0,41.549,0,44.343c0,3.195,2.4,6.206,7.769,9.762a.587.587,0,0,0,.656,0c5.373-3.557,7.769-6.568,7.769-9.762C16.194,41.551,14.375,39.221,11.829,39.221Zm1.428,9.1A24,24,0,0,1,8.1,52.7a24,24,0,0,1-5.16-4.383,6.283,6.283,0,0,1-1.671-3.978c0-2.012,1.244-3.74,3.1-3.74A2.891,2.891,0,0,1,6.76,41.938a5.312,5.312,0,0,1,.734,1.445.618.618,0,0,0,1.208,0,5.308,5.308,0,0,1,.711-1.413A2.9,2.9,0,0,1,11.829,40.6c1.857,0,3.1,1.73,3.1,3.74A6.283,6.283,0,0,1,13.257,48.321Z" transform="translate(0 -39.221)" fill="#1c1d1b"></path>
 											</svg>
@@ -71,6 +71,9 @@ async function getList(url,type){
     			</div>`;
     }
 	document.getElementById("plist").innerHTML = html;
+	// setTimeout(() => {
+	// 	wishlistitem();
+	// },1000)
 }
 
 // Meal Category Function
@@ -106,21 +109,12 @@ function getMealList(item){
 				window.location = `detail.html?id=${mealId}`;
 			});
 		});
-		// Add and remove to wishlist
-		let wishListBtn = document.querySelectorAll(".actionBtn span");
-		wishListBtn.forEach(function (i) {
-			i.addEventListener("click", function(){
-				var mealFavId = this.getAttribute('data_id');
-				favMealAddRemove(mealFavId);
-				getMealList(item);
-			});
-		});
 	}, 1000);
 }
 
 // Get Meal List accroding to search
 let input = document.getElementById("search");
-input.addEventListener('input', (e) => {
+input.addEventListener('keyup', (e) => {
   	var inputVal = e.target.value;
 	if(inputVal.length>0){
 		document.getElementById("mainTitle").innerHTML = "Search result for "+inputVal;
@@ -131,6 +125,7 @@ input.addEventListener('input', (e) => {
 		getCategory();
 	}
 });
+
 
 // back btn
 var backBtn = document.getElementById("back");
