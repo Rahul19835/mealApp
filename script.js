@@ -72,14 +72,25 @@ async function getList(url,type){
     }
 	document.getElementById("plist").innerHTML = html;
 	setTimeout(() => {
-		// Redirect to detail page
-	    let menuItem = document.querySelectorAll(".productCard a");
-		menuItem.forEach(function (i) {
-			i.addEventListener("click", function(){
-				var mealId = this.getAttribute('data_id');
-				window.location = `detail.html?id=${mealId}`;
+		if(type == "cat"){
+			// Get meal accroding to category
+			let catItem = document.querySelectorAll(".productCard a");
+			catItem.forEach(function (i) {
+				i.addEventListener("click", function(){
+					var catId = this.getAttribute('data_catItem');
+					getMealList(catId);
+				});
 			});
-		});
+		}else{
+			// Redirect to detail page
+		    let menuItem = document.querySelectorAll(".productCard a");
+			menuItem.forEach(function (i) {
+				i.addEventListener("click", function(){
+					var mealId = this.getAttribute('data_id');
+					window.location = `detail.html?id=${mealId}`;
+				});
+			});
+		}
 	}, 1000);
 }
 
@@ -89,16 +100,6 @@ function getCategory(){
 	document.getElementById("back").style.display = 'none';
 	var carUrl = "https://www.themealdb.com/api/json/v1/1/categories.php";
 	getList(carUrl,"cat");
-	setTimeout(() => {
-	    let catItem = document.querySelectorAll(".productCard a");
-		catItem.forEach(function (i) {
-			i.addEventListener("click", function(){
-				var catId = this.getAttribute('data_catItem');
-				getMealList(catId);
-			});
-		});
-	}, 1000);
-	
 }
 
 // Meal List Function Based on Category
@@ -106,8 +107,7 @@ function getMealList(item){
 	document.getElementById("mainTitle").innerHTML = item;
 	document.getElementById("back").style.display = 'block'; 
 	var catItemUrl = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${item}`;
-	getList(catItemUrl,"");
-	
+	getList(catItemUrl,"");	
 }
 
 // Get Meal List accroding to search
