@@ -71,9 +71,16 @@ async function getList(url,type){
     			</div>`;
     }
 	document.getElementById("plist").innerHTML = html;
-	// setTimeout(() => {
-	// 	wishlistitem();
-	// },1000)
+	setTimeout(() => {
+		// Redirect to detail page
+	    let menuItem = document.querySelectorAll(".productCard a");
+		menuItem.forEach(function (i) {
+			i.addEventListener("click", function(){
+				var mealId = this.getAttribute('data_id');
+				window.location = `detail.html?id=${mealId}`;
+			});
+		});
+	}, 1000);
 }
 
 // Meal Category Function
@@ -100,16 +107,7 @@ function getMealList(item){
 	document.getElementById("back").style.display = 'block'; 
 	var catItemUrl = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${item}`;
 	getList(catItemUrl,"");
-	setTimeout(() => {
-		// Redirect to detail page
-	    let menuItem = document.querySelectorAll(".productCard a");
-		menuItem.forEach(function (i) {
-			i.addEventListener("click", function(){
-				var mealId = this.getAttribute('data_id');
-				window.location = `detail.html?id=${mealId}`;
-			});
-		});
-	}, 1000);
+	
 }
 
 // Get Meal List accroding to search
